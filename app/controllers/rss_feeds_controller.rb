@@ -8,7 +8,6 @@ class RssFeedsController < ApplicationController
   # GET /rss_feeds.json
   def index
    # @rss_feeds = RssFeed.all
-    @rss = load_rss("http://www.journaldunet.com/rss/")
   end
 
   # GET /rss_feeds/1

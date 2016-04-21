@@ -11,13 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160420171539) do
+ActiveRecord::Schema.define(version: 20160421160450) do
+
+  create_table "rss_feed_items", force: :cascade do |t|
+    t.string   "title",       limit: 255,   null: false
+    t.text     "summary",     limit: 65535, null: false
+    t.datetime "date",                      null: false
+    t.boolean  "read",                      null: false
+    t.string   "url",         limit: 255,   null: false
+    t.integer  "rss_feed_id", limit: 4,     null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
 
   create_table "rss_feeds", force: :cascade do |t|
     t.string   "title",      limit: 255, null: false
-    t.boolean  "read",                   null: false
-    t.string   "summary",    limit: 255, null: false
-    t.datetime "date",                   null: false
     t.string   "url",        limit: 255, null: false
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
