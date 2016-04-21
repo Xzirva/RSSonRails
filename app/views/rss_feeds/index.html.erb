@@ -1,1 +1,16 @@
-<%= %>
+<%@rss_feeds.each{ |rss|%>
+    <div class="panel panel-default">
+      <div class="panel-heading"><h3><%= rss.title%></h3></div>
+      <div class="panel-body">
+        <table class="table table-responsive table-bordered">
+          <%rss.rss_feed_items.each{ |r|%>
+
+              <tr>
+                <%= raw r.summary %><br>
+
+              </tr>
+          <%}%>
+        </table>
+      </div>
+    </div>
+<%}%>
