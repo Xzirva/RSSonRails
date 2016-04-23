@@ -30,13 +30,13 @@ class RssFeedsController < ApplicationController
     @rss_feed = RssFeed.new(rss_feed_params)
     rss_items = load_rss(@rss_feed.url)
     unless rss_items.is_a?(String)
-
+      rss_items.each { |r|
+        @rss_feed.rss_feed_items.build(title: r.title, url: r.link, summary: r.description, read: false, date: r.date, rss_feed_id: RssFeed.count + 1)
+      }
       respond_to do |format|
         if @rss_feed.save
-          format.html { redirect_to @rss_feed, notice: 'Rss feed was successfully created.' }
           format.json { render :show, status: :created, location: @rss_feed }
         else
-          format.html { render :new }
           format.json { render json: @rss_feed.errors, status: :unprocessable_entity }
         end
       end
@@ -45,20 +45,7 @@ class RssFeedsController < ApplicationController
 
   # PATCH/PUT /rss_feeds/1
   # PATCH/PUT /rss_feeds/1.json
-  def update
-    respond_to do |format|
-      if @rss_feed.update(rss_feed_params)
-        format.html { redirect_to @rss_feed, notice: 'Rss feed was successfully updated.' }
-        format.json { render :show, status: :ok, location: @rss_feed }
-      else
-        format.html { render :edit }
-        format.json { render json: @rss_feed.errors, status: :unprocessable_entity }
-      end
-    end
-  end
 
-  # DELETE /rss_feeds/1
-  # DELETE /rss_feeds/1.json
   def destroy
     @rss_feed.destroy
     respond_to do |format|
@@ -75,6 +62,6 @@ class RssFeedsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def rss_feed_params
-    params.fetch(:rss_feed, {})
+    params.permit(:title, :url)
   end
 end
