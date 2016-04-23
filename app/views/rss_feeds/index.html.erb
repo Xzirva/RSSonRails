@@ -11,14 +11,16 @@
         var url = document.getElementById("feed_url").value;
         $.post('/rss_feeds', {'title':title, 'url':url},function(result){
             var rss = result;
-            var html ="<div class=" + "panel panel-default "+">"
+            var html ="<div class=" + "panel panel-default" + ">"
                     + "<div class=" + "panel-heading" + ">" +
                     "<" + "h3>"+ rss[0]['title']+ "</" + "h3>" +
                     "</" + "div>" +
                     "<div class="+ "panel-body>";
 
             for(var i = 0; i< rss[1].length; i++) {
-                html = html + "<ul class=" + "list-group" + ">" + "<li class=" + "list-group-item col-sm-12" + ">" + "<div class=" + "row" + ">";
+                html = html + "<ul class=" + "list-group" + ">" +
+                        "<li class=" + "list-group-item col-sm-12" + ">" +
+                        "<div class=" + "row" + ">";
                 html = html + rss[1][i]['summary'];
                 html = html +"</" + "div>" + "<div id=" + "read_btn"+rss[1][i]['id'] + " class=" + "row" + "><a onclick=" + "is_read(" + rss[1][i]['id'] + ")" + ">Marquer comme lu" + "</" + "a>" + "</" + "div>" + "</" + "li>" + "</" + "ul>";
             }
@@ -35,6 +37,7 @@
   <button class="btn btn-primary" onclick="add_feed()">Ajouter</button>
 </div>
 <div class="col-sm-4" id="new_feed"></div>
+
 <%@rss_feeds.each{ |rss|%>
     <div class="col-sm-4">
       <div class="panel panel-default ">
