@@ -6,8 +6,21 @@
             }
         })
     }
+        function add_feed(){
+            var title = document.getElementById("feed_title").value;
+            var url = document.getElementById("feed_url").value;
+            $.post('/rss_feeds', {'title':title, 'url':url},function(result){
+                alert(result)
+            });
+        }
 
 </script>
+
+<div id="demo" class="collapse">
+  Titre: <input class="form-control" type="text" placeholder="Titre du flux" name="flux_titre" id="feed_title">
+  Url: <input class="form-control" type="text" placeholder="Ulr du flux" name="flux_url" id="feed_url" >
+  <button class="btn btn-primary" onclick="add_feed()">Ajouter</button>
+</div>
 <%@rss_feeds.each{ |rss|%>
     <div class="col-sm-4">
       <div class="panel panel-default ">

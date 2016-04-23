@@ -7,7 +7,7 @@ class RssFeedsController < ApplicationController
   # GET /rss_feeds
   # GET /rss_feeds.json
   def index
-   @rss_feeds = RssFeed.all.includes(:rss_feed_items)
+    @rss_feeds = RssFeed.all.includes(:rss_feed_items)
   end
 
   # GET /rss_feeds/1
@@ -28,14 +28,17 @@ class RssFeedsController < ApplicationController
   # POST /rss_feeds.json
   def create
     @rss_feed = RssFeed.new(rss_feed_params)
+    rss_items = load_rss(@rss_feed.url)
+    unless rss_items.is_a?(String)
 
-    respond_to do |format|
-      if @rss_feed.save
-        format.html { redirect_to @rss_feed, notice: 'Rss feed was successfully created.' }
-        format.json { render :show, status: :created, location: @rss_feed }
-      else
-        format.html { render :new }
-        format.json { render json: @rss_feed.errors, status: :unprocessable_entity }
+      respond_to do |format|
+        if @rss_feed.save
+          format.html { redirect_to @rss_feed, notice: 'Rss feed was successfully created.' }
+          format.json { render :show, status: :created, location: @rss_feed }
+        else
+          format.html { render :new }
+          format.json { render json: @rss_feed.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -65,13 +68,13 @@ class RssFeedsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_rss_feed
-      @rss_feed = RssFeed.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_rss_feed
+    @rss_feed = RssFeed.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def rss_feed_params
-      params.fetch(:rss_feed, {})
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def rss_feed_params
+    params.fetch(:rss_feed, {})
+  end
 end
