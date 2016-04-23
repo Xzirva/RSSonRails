@@ -1,16 +1,31 @@
+<script type="text/javascript">
+    function is_read(id){
+        $.getJSON('/mark_read/'+id, function(result){
+            if (result['response'] == 'success'){
+                document.getElementById("read_btn").innerHTML = "<div class=" + "alert-success" +">Lu"+"<"+"/div>";
+            }
+        })
+    }
+
+</script>
 <%@rss_feeds.each{ |rss|%>
-    <div class="panel panel-default">
-      <div class="panel-heading"><h3><%= rss.title%></h3></div>
-      <div class="panel-body">
-        <table class="table table-responsive table-bordered">
-          <%rss.rss_feed_items.each{ |r|%>
+    <div class="col-sm-4">
+      <div class="panel panel-default ">
+        <div class="panel-heading"><h3><%= rss.title%></h3></div>
+        <div class="panel-body">
+          <ul class="list-group">
 
-              <tr>
-                <%= raw r.summary %><br>
-
-              </tr>
-          <%}%>
-        </table>
+            <%rss.rss_feed_items.each{ |r|%>
+                <li class="list-group-item col-sm-12"> <div class="row"><%= raw r.summary %></div>
+                  <%if r.read%>
+                      <div class="alert-success">Lu</div>
+                  <%else%>
+                      <div id="read_btn" class="row"><a onclick="is_read(<%= r.id%>)">Marquer comme lu</a></div>
+                  <%end%>
+                </li>
+            <%}%>
+          </ul>
+        </div>
       </div>
     </div>
 <%}%>

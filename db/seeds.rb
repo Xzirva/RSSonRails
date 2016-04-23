@@ -8,9 +8,13 @@ include RSS
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-url = "http://www.journaldunet.com/rss/"
-rss = load_rss(url)
-feed = RssFeed.create(title: 'Le journal du Net', url: url)
-rss.each { |r|
-  RssFeedItem.create(title: r.title, url: r.link, summary: r.description, read: false, date: r.date, rss_feed_id: feed.id)
+urls = ["http://www.journaldunet.com/rss/", "http://www.lemonde.fr/rss/"]
+i = 1
+urls.each { |url|
+  rss = load_rss(url)
+  feed = RssFeed.create(title: "RSS Feed #{i}", url: url)
+  i = i + 1
+  rss.each { |r|
+    RssFeedItem.create(title: r.title, url: r.link, summary: r.description, read: false, date: r.date, rss_feed_id: feed.id)
+  }
 }

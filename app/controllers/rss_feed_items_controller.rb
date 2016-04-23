@@ -1,5 +1,5 @@
 class RssFeedItemsController < ApplicationController
-  before_action :set_rss_feed_item, only: [:show, :edit, :update, :destroy]
+  before_action :set_rss_feed_item, only: [:show, :edit, :update, :destroy, :mark_read]
 
   # GET /rss_feed_items
   # GET /rss_feed_items.json
@@ -59,6 +59,13 @@ class RssFeedItemsController < ApplicationController
       format.html { redirect_to rss_feed_items_url, notice: 'Rss feed item was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def mark_read
+    if @rss_feed_item.update({read: true})
+      render json: {:response => 'success'}
+    end
+
   end
 
   private
