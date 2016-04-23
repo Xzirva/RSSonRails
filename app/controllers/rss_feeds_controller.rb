@@ -35,7 +35,8 @@ class RssFeedsController < ApplicationController
       }
       respond_to do |format|
         if @rss_feed.save
-          format.json { render :show, status: :created, location: @rss_feed }
+            rss_items = @rss_feed.rss_feed_items
+          format.json { render json: [@rss_feed,rss_items], status: :created}
         else
           format.json { render json: @rss_feed.errors, status: :unprocessable_entity }
         end
