@@ -15,9 +15,9 @@
     function add_feed(){
         var title = document.getElementById("feed_title").value;
         var url = document.getElementById("feed_url").value;
-        var res;
+
         $.post('/rss_feeds', {'title':title, 'url':url},function(result){
-            res = result;
+            var rss = result;
             var new_head ="<" + "h3>"+ rss[0]['title']+ "</" + "h3>";
             var new_list = "";
             for(var i = 0; i< rss[1].length; i++) {

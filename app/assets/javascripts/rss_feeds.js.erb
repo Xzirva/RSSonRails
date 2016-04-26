@@ -1,0 +1,45 @@
+//Mark RSS item identified in the database table RssFeedItem by id, as read
+//Ajax call to a action of the RssFeedItems controller
+function is_read(id){
+    $.getJSON('/mark_read/'+id, function(result){
+        if (result['response'] == 'success'){
+            document.getElementById("read_btn"+id).innerHTML = "<div class=" + "alert-success" +">Lu"+"<"+"/div>";
+        }
+    })
+}
+
+//Switch the button 'Ajouter un flux' to 'Annuler' and vice-versa
+function change_button_info(){
+    if (document.getElementById("button_add_feed").innerHTML == "Annuler")
+        document.getElementById("button_add_feed").innerHTML = "Ajouter un flux";
+    else
+        document.getElementById("button_add_feed").innerHTML = "Annuler";
+}
+
+//Ajax call to the create action and display dynamically the new rss feed with its items
+function add_feed(){
+    var title = document.getElementById("feed_title").value;
+    var url = document.getElementById("feed_url").value;
+    var res;
+
+    $.post('/rss_feeds', {'title':title, 'url':url},function(result){
+        //If success
+        var rss = result;
+
+        //New rss feed Rendering process
+        var new_head ="<" + "h3>"+ rss[0]['title']+ "</" + "h3>";
+        var new_list = "";
+        for(var i = 0; i< rss[1].length; i++) {
+            new_list = new_list + "<li class=" + "list-group-item col-sm-12" + ">" + "<div class=" + "row" + ">";
+            new_list = new_list + rss[1][i]['summary'];
+            new_list = new_list +"</" + "div>" + "<div id=" + "read_btn"+rss[1][i]['id'] + " class=" + "row" + "><a onclick=" + "is_read(" + rss[1][i]['id'] + ")" + ">Marquer comme lu" + "</" + "a>" + "</" + "div>" + "</" + "li>";
+        }
+
+        document.getElementById('new_feed_item_list').innerHTML = new_list;
+        document.getElementById('new_feed_head').innerHTML = new_head;
+        document.getElementById('new_feed').style.display = 'initial';
+    })
+            .fail( function(xhr, textStatus, errorThrown) {
+                alert("Une erreur est survenue, veuillez vérifier les valeurs d'entrée\n Si le problème persiste contacte l'adiministrateur de l'application");
+            });
+}
