@@ -11,7 +11,7 @@ module RSS
         break
       end
     end
-    if items.nil? || items.size == 0
+    if items.nil?
       'Désolé, Une erreur est survenue'
     else
       items

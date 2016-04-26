@@ -17,21 +17,19 @@
         var url = document.getElementById("feed_url").value;
         $.post('/rss_feeds', {'title':title, 'url':url},function(result){
             var rss = result;
-            var html ="<div class=" + "panel panel-default" + ">"
-                    + "<div class=" + "panel-heading" + ">" +
-                    "<" + "h3>"+ rss[0]['title']+ "</" + "h3>" +
-                    "</" + "div>" +
-                    "<div class="+ "panel-body>";
-
-            for(var i = 0; i< rss[1].length; i++) {
-                html = html + "<ul class=" + "list-group" + ">" +
-                        "<li class=" + "list-group-item col-sm-12" + ">" +
-                        "<div class=" + "row" + ">";
-                html = html + rss[1][i]['summary'];
-                html = html +"</" + "div>" + "<div id=" + "read_btn"+rss[1][i]['id'] + " class=" + "row" + "><a onclick=" + "is_read(" + rss[1][i]['id'] + ")" + ">Marquer comme lu" + "</" + "a>" + "</" + "div>" + "</" + "li>" + "</" + "ul>";
-            }
-            html = html + "</" + "div>" + " </" + "div>";
-            document.getElementById('new_feed').innerHTML = html;
+            var new_head ="<" + "h3>"+ rss[0]['title']+ "</" + "h3>";
+            var new_list = "";
+            if (rss[1].length == 0)
+                new_list =  "<div class=" + "alert-info" + "> "+ "Aucun post publié dans ce flux" +" </" + "div>";
+            else
+                for(var i = 0; i< rss[1].length; i++) {
+                    new_list = "<li class=" + "list-group-item col-sm-12" + ">" + "<div class=" + "row" + ">";
+                    new_list = new_list + rss[1][i]['summary'];
+                    new_list = new_list +"</" + "div>" + "<div id=" + "read_btn"+rss[1][i]['id'] + " class=" + "row" + "><a onclick=" + "is_read(" + rss[1][i]['id'] + ")" + ">Marquer comme lu" + "</" + "a>" + "</" + "div>" + "</" + "li>";
+                }
+            document.getElementById('new_feed_item_list').innerHTML = new_list;
+            document.getElementById('new_feed_head').innerHTML = new_head;
+            document.getElementById('new_feed').style.display = 'initial';
         });
     }
 
@@ -42,15 +40,40 @@
     <div class="panel panel-default">
       <div class="panel-heading">Ajouter un flux</div>
       <div class="panel-body" id="form">
-        Titre: <input class="form-control" type="text" placeholder="Titre du flux" name="flux_titre" id="feed_title">
-        Url: <input class="form-control" type="text" placeholder="Ulr du flux" name="flux_url" id="feed_url" >
+        <div class="form-group">
+          <div class="col-sm-2 control-label form-control-static">Titre:</div>
+          <div class="col-sm-10">
+            <input class="form-control" type="text" placeholder="Titre du flux" name="flux_titre" id="feed_title">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-2 control-label form-control-static">Url:</div>
+          <div class="col-sm-10">
+            <input class="form-control" type="text" placeholder="Ulr du flux" name="flux_url" id="feed_url" >
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-2"></div>
+          <div class="col-sm-10">
+            <button class="btn btn-primary" onclick="add_feed()">Valider</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
 <div class="row">
-  <div class="col-sm-4" id="new_feed"></div>
+  <div class="col-sm-4" id="new_feed" style="display: none;">
+    <div class="panel panel-default ">
+      <div class="panel-heading" id="new_feed_head"></div>
+      <div class="panel-body">
+        <ul class="list-group" id="new_feed_item_list">
+
+        </ul>
+      </div>
+    </div>
+  </div>
 
   <%@rss_feeds.each{ |rss|%>
       <div class="col-sm-4">
@@ -58,16 +81,19 @@
           <div class="panel-heading"><h3><%= rss.title%></h3></div>
           <div class="panel-body">
             <ul class="list-group">
-
-              <%rss.rss_feed_items.each{ |r|%>
-                  <li class="list-group-item col-sm-12"> <div class="row"><%= raw r.summary %></div>
-                    <%if r.read%>
-                        <div class="alert-success">Lu</div>
-                    <%else%>
-                        <div id="read_btn<%=r.id%>" class="row"><a onclick="is_read(<%= r.id%>)">Marquer comme lu</a></div>
-                    <%end%>
-                  </li>
-              <%}%>
+              <%if rss.rss_feed_items.size > 0 %>
+                  <%rss.rss_feed_items.each{ |r|%>
+                      <li class="list-group-item col-sm-12"> <div class="row"><%= raw r.summary %></div>
+                        <%if r.read%>
+                            <div class="alert-success">Lu</div>
+                        <%else%>
+                            <div id="read_btn<%=r.id%>" class="row"><a onclick="is_read(<%= r.id%>)">Marquer comme lu</a></div>
+                        <%end%>
+                      </li>
+                  <%}%>
+              <%else%>
+                  <div class="alert-info">Aucun post publié dans ce flux</div>
+              <%end%>
             </ul>
           </div>
         </div>
