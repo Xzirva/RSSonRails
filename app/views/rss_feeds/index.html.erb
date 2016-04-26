@@ -15,8 +15,9 @@
     function add_feed(){
         var title = document.getElementById("feed_title").value;
         var url = document.getElementById("feed_url").value;
+        var res;
         $.post('/rss_feeds', {'title':title, 'url':url},function(result){
-            var rss = result;
+            res = result;
             var new_head ="<" + "h3>"+ rss[0]['title']+ "</" + "h3>";
             var new_list = "";
             for(var i = 0; i< rss[1].length; i++) {
@@ -27,7 +28,10 @@
             document.getElementById('new_feed_item_list').innerHTML = new_list;
             document.getElementById('new_feed_head').innerHTML = new_head;
             document.getElementById('new_feed').style.display = 'initial';
-        });
+        })
+                .fail( function(xhr, textStatus, errorThrown) {
+                    alert("Une erreur est survenue, veuillez vérifier les valeurs d'entrée\n Si le problème persiste contacte l'adiministrateur de l'application");
+                });
     }
 
 </script>
