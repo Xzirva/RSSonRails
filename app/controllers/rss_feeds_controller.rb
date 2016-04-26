@@ -7,21 +7,7 @@ class RssFeedsController < ApplicationController
   # GET /rss_feeds
   # GET /rss_feeds.json
   def index
-    @rss_feeds = RssFeed.all.includes(:rss_feed_items)
-  end
-
-  # GET /rss_feeds/1
-  # GET /rss_feeds/1.json
-  def show
-  end
-
-  # GET /rss_feeds/new
-  def new
-    @rss_feed = RssFeed.new
-  end
-
-  # GET /rss_feeds/1/edit
-  def edit
+    @rss_feeds = RssFeed.all.order(created_at: :desc).includes(:rss_feed_items)
   end
 
   # POST /rss_feeds
@@ -41,17 +27,6 @@ class RssFeedsController < ApplicationController
           format.json { render json: @rss_feed.errors, status: :unprocessable_entity }
         end
       end
-    end
-  end
-
-  # PATCH/PUT /rss_feeds/1
-  # PATCH/PUT /rss_feeds/1.json
-
-  def destroy
-    @rss_feed.destroy
-    respond_to do |format|
-      format.html { redirect_to rss_feeds_url, notice: 'Rss feed was successfully destroyed.' }
-      format.json { head :no_content }
     end
   end
 

@@ -19,14 +19,11 @@
             var rss = result;
             var new_head ="<" + "h3>"+ rss[0]['title']+ "</" + "h3>";
             var new_list = "";
-            if (rss[1].length == 0)
-                new_list =  "<div class=" + "alert-info" + "> "+ "Aucun post publié dans ce flux" +" </" + "div>";
-            else
-                for(var i = 0; i< rss[1].length; i++) {
-                    new_list = "<li class=" + "list-group-item col-sm-12" + ">" + "<div class=" + "row" + ">";
-                    new_list = new_list + rss[1][i]['summary'];
-                    new_list = new_list +"</" + "div>" + "<div id=" + "read_btn"+rss[1][i]['id'] + " class=" + "row" + "><a onclick=" + "is_read(" + rss[1][i]['id'] + ")" + ">Marquer comme lu" + "</" + "a>" + "</" + "div>" + "</" + "li>";
-                }
+            for(var i = 0; i< rss[1].length; i++) {
+                new_list = "<li class=" + "list-group-item col-sm-12" + ">" + "<div class=" + "row" + ">";
+                new_list = new_list + rss[1][i]['summary'];
+                new_list = new_list +"</" + "div>" + "<div id=" + "read_btn"+rss[1][i]['id'] + " class=" + "row" + "><a onclick=" + "is_read(" + rss[1][i]['id'] + ")" + ">Marquer comme lu" + "</" + "a>" + "</" + "div>" + "</" + "li>";
+            }
             document.getElementById('new_feed_item_list').innerHTML = new_list;
             document.getElementById('new_feed_head').innerHTML = new_head;
             document.getElementById('new_feed').style.display = 'initial';
@@ -64,10 +61,10 @@
 </div>
 
 <div class="row">
-  <div class="col-sm-4" id="new_feed" style="display: none;">
+  <div class="col-sm-4 new_panel_hidden" id="new_feed">
     <div class="panel panel-default ">
       <div class="panel-heading" id="new_feed_head"></div>
-      <div class="panel-body">
+      <div class="panel-body feed_panel">
         <ul class="list-group" id="new_feed_item_list">
 
         </ul>
@@ -79,7 +76,7 @@
       <div class="col-sm-4">
         <div class="panel panel-default ">
           <div class="panel-heading"><h3><%= rss.title%></h3></div>
-          <div class="panel-body">
+          <div class="panel-body feed_panel">
             <ul class="list-group">
               <%if rss.rss_feed_items.size > 0 %>
                   <%rss.rss_feed_items.each{ |r|%>

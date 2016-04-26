@@ -10,7 +10,7 @@ class ReloadRssJob
     rss_feeds.each { |rss|
       c_rss = rss
       items = load_rss(rss.url)
-      unless items[0].is_a?(String) # == error!
+      unless items.is_a?(String) || items.size == 0 # == error!
         if items[0].date > rss.rss_feed_items.order(date: :desc).first.date
           items.each { |i|
             c_rss.rss_feed_items.build(title: i.title, url: i.link, summary: i.description, read: false, date: i.date, rss_feed_id: c_rss.id)

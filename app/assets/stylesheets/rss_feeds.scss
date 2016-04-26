@@ -1,3 +1,11 @@
 // Place all the styles related to the RSSFeeds controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+.feed_panel{
+  max-height: 500px;
+  overflow-y: scroll;
+}
+
+.new_panel_hidden{
+  display: none
+}

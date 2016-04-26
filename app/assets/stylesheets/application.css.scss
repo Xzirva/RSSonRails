@@ -1,4 +1,5 @@
 @import "bootstrap";
+@import "rss_feeds";
 /*
  * This is a manifest file that'll be compiled into application.css, which will include all the files
  * listed below.
@@ -11,6 +12,7 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
+ *= require rss_feeds
  *= require_tree .
  *= require_self
  */
