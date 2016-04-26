@@ -20,7 +20,7 @@
             var new_head ="<" + "h3>"+ rss[0]['title']+ "</" + "h3>";
             var new_list = "";
             for(var i = 0; i< rss[1].length; i++) {
-                new_list = "<li class=" + "list-group-item col-sm-12" + ">" + "<div class=" + "row" + ">";
+                new_list = new_list + "<li class=" + "list-group-item col-sm-12" + ">" + "<div class=" + "row" + ">";
                 new_list = new_list + rss[1][i]['summary'];
                 new_list = new_list +"</" + "div>" + "<div id=" + "read_btn"+rss[1][i]['id'] + " class=" + "row" + "><a onclick=" + "is_read(" + rss[1][i]['id'] + ")" + ">Marquer comme lu" + "</" + "a>" + "</" + "div>" + "</" + "li>";
             }
