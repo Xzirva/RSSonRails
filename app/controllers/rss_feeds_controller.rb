@@ -14,8 +14,12 @@ class RssFeedsController < ApplicationController
   # POST /rss_feeds.json
   def create
     @rss_feed = RssFeed.new(rss_feed_params)
-    rss_items = load_rss(@rss_feed.url)
-    unless rss_items.is_a?(String)
+
+    if @rss_feed.wrong_raw_items
+
+      render json: @rss_feed.errors, status: :unprocessable_entity
+    else
+      rss_items = @rss_feed.raw_items
       rss_items.each { |r|
         @rss_feed.rss_feed_items.build(title: r.title, url: r.link, summary: r.description, read: false, date: r.date, rss_feed_id: RssFeed.count + 1)
       }

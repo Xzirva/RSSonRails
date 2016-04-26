@@ -40,6 +40,7 @@ function add_feed(){
         document.getElementById('new_feed').style.display = 'initial';
     })
             .fail( function(xhr, textStatus, errorThrown) {
-                alert("Une erreur est survenue, veuillez vérifier les valeurs d'entrée\n Si le problème persiste contacte l'adiministrateur de l'application");
+                alert(errorThrown);
+                //alert("Une erreur est survenue, veuillez vérifier les valeurs d'entrée\n Si le problème persiste contacte l'adiministrateur de l'application");
             });
 }
