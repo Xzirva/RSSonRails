@@ -6,6 +6,12 @@
             }
         })
     }
+    function change_button_info(){
+        if (document.getElementById("button_add_feed").innerHTML == "Annuler")
+            document.getElementById("button_add_feed").innerHTML = "Ajouter un flux";
+        else
+            document.getElementById("button_add_feed").innerHTML = "Annuler";
+    }
     function add_feed(){
         var title = document.getElementById("feed_title").value;
         var url = document.getElementById("feed_url").value;
@@ -30,32 +36,41 @@
     }
 
 </script>
-
-<div id="demo" class="collapse">
-  Titre: <input class="form-control" type="text" placeholder="Titre du flux" name="flux_titre" id="feed_title">
-  Url: <input class="form-control" type="text" placeholder="Ulr du flux" name="flux_url" id="feed_url" >
-  <button class="btn btn-primary" onclick="add_feed()">Ajouter</button>
-</div>
-<div class="col-sm-4" id="new_feed"></div>
-
-<%@rss_feeds.each{ |rss|%>
-    <div class="col-sm-4">
-      <div class="panel panel-default ">
-        <div class="panel-heading"><h3><%= rss.title%></h3></div>
-        <div class="panel-body">
-          <ul class="list-group">
-
-            <%rss.rss_feed_items.each{ |r|%>
-                <li class="list-group-item col-sm-12"> <div class="row"><%= raw r.summary %></div>
-                  <%if r.read%>
-                      <div class="alert-success">Lu</div>
-                  <%else%>
-                      <div id="read_btn" class="row"><a onclick="is_read(<%= r.id%>)">Marquer comme lu</a></div>
-                  <%end%>
-                </li>
-            <%}%>
-          </ul>
-        </div>
+<div class="row">
+  <div class="col-sm-6"></div>
+  <div class="col-sm-6 collapse" id="demo">
+    <div class="panel panel-default">
+      <div class="panel-heading">Ajouter un flux</div>
+      <div class="panel-body" id="form">
+        Titre: <input class="form-control" type="text" placeholder="Titre du flux" name="flux_titre" id="feed_title">
+        Url: <input class="form-control" type="text" placeholder="Ulr du flux" name="flux_url" id="feed_url" >
       </div>
     </div>
-<%}%>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-4" id="new_feed"></div>
+
+  <%@rss_feeds.each{ |rss|%>
+      <div class="col-sm-4">
+        <div class="panel panel-default ">
+          <div class="panel-heading"><h3><%= rss.title%></h3></div>
+          <div class="panel-body">
+            <ul class="list-group">
+
+              <%rss.rss_feed_items.each{ |r|%>
+                  <li class="list-group-item col-sm-12"> <div class="row"><%= raw r.summary %></div>
+                    <%if r.read%>
+                        <div class="alert-success">Lu</div>
+                    <%else%>
+                        <div id="read_btn<%=r.id%>" class="row"><a onclick="is_read(<%= r.id%>)">Marquer comme lu</a></div>
+                    <%end%>
+                  </li>
+              <%}%>
+            </ul>
+          </div>
+        </div>
+      </div>
+  <%}%>
+</div>

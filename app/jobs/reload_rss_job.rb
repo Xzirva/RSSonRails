@@ -21,6 +21,6 @@ class ReloadRssJob
         end
       end
     }
-    ReloadRssJob.perform_in(10)
+    ReloadRssJob.perform_in(900)
   end
 end

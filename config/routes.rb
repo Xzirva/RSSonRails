@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
-  resources :rss_feeds
+  match '/rss_feeds', to: 'rss_feeds#index', via: :get
   match '/mark_read/:id', to: 'rss_feed_items#mark_read', via: :get
+  root to: 'rss_feeds#index'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

@@ -8,7 +8,7 @@ include RSS
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-urls = ["http://www.journaldunet.com/rss/", "http://www.lemonde.fr/rss/"]
+urls = ["http://www.journaldunet.com/rss/"]
 i = 1
 urls.each { |url|
   rss = load_rss(url)
